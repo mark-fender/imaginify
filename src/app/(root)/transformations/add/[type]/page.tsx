@@ -1,7 +1,5 @@
-interface AddTransformationTypePageProps {}
-
-const AddTransformationTypePage = ({}: AddTransformationTypePageProps) => {
-  return ;
+const AddTransformationTypePage = () => {
+  return;
 };
 
 export default AddTransformationTypePage;

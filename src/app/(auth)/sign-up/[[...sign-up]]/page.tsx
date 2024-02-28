@@ -1,8 +1,7 @@
 import { SignUp } from '@clerk/nextjs';
 
-interface SignUpPageProps {}
 
-const SignUpPage = ({}: SignUpPageProps) => {
+const SignUpPage = () => {
   return <SignUp />;
 };
 

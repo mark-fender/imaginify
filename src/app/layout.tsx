@@ -15,11 +15,11 @@ export const metadata: Metadata = {
   description: 'AI powered image generator',
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <ClerkProvider
       appearance={{
@@ -32,4 +32,6 @@ export default function RootLayout({
       </html>
     </ClerkProvider>
   );
-}
+};
+
+export default RootLayout;

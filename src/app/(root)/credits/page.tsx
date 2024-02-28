@@ -1,6 +1,4 @@
-interface CreditsPageProps {}
-
-const CreditsPage = ({}: CreditsPageProps) => {
+const CreditsPage = () => {
   return <div>CreditsPage</div>;
 };
 

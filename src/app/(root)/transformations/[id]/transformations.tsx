@@ -1,7 +1,5 @@
-interface TransformationsPageProps {}
-
-const TransformationsPage = ({}: TransformationsPageProps) => {
-  return ;
+const TransformationsPage = () => {
+  return;
 };
 
 export default TransformationsPage;

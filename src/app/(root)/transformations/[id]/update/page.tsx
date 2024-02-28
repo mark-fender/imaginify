@@ -1,6 +1,4 @@
-interface UpdateTransformationPageProps {}
-
-const UpdateTransformationPage = ({}: UpdateTransformationPageProps) => {
+const UpdateTransformationPage = () => {
   return;
 };
 

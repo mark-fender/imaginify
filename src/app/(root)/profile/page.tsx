@@ -1,6 +1,4 @@
-interface ProfilePageProps {}
-
-const ProfilePage = ({}: ProfilePageProps) => {
+const ProfilePage = () => {
   return <div>ProfilePage</div>;
 };
 

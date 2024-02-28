@@ -1,8 +1,6 @@
 import { SignIn } from '@clerk/nextjs';
 
-interface SignInPageProps {}
-
-const SignInPage = ({}: SignInPageProps) => {
+const SignInPage = () => {
   return <SignIn />;
 };
 
