@@ -21,6 +21,7 @@ import { CustomField } from './CustomField';
 import { useState, useTransition } from 'react';
 import { IImage } from '@/lib/database/models/image.model';
 import { updateCredits } from '@/lib/actions/user.actions';
+import MediaUploader from '../MediaUploader';
 
 const transformationFormSchema = z.object({
   title: z.string(),
@@ -98,7 +99,7 @@ const TransformationForm = ({
     }, 1000);
   };
 
-  const onTransformHandler = async () => {
+  const transformHandler = async () => {
     setIsTransforming(true);
     setTransformationConfig(deepMergeObjects(newTransformation, transformationConfig));
     setNewTransformation(null);
@@ -181,12 +182,29 @@ const TransformationForm = ({
           </div>
         )}
 
+        <div className='media-uploader-field'>
+          <CustomField
+            control={form.control}
+            name='publicId'
+            className='flex- size-full flex-col'
+            render={({ field }) => (
+              <MediaUploader
+                onValueChange={field.onChange}
+                setImage={setImage}
+                publicId={field.value}
+                image={image}
+                type={type}
+              />
+            )}
+          />
+        </div>
+
         <div className='flex flex-col gap-4'>
           <Button
             type='button'
             className='submit-button capitalize'
             disabled={isTransforming || newTransformation === null}
-            onClick={onTransformHandler}>
+            onClick={transformHandler}>
             {isTransforming ? 'Transforming...' : 'Apply Transformation'}
           </Button>
 
