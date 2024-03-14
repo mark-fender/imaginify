@@ -22,6 +22,7 @@ import { useState, useTransition } from 'react';
 import { IImage } from '@/lib/database/models/image.model';
 import { updateCredits } from '@/lib/actions/user.actions';
 import MediaUploader from '../MediaUploader';
+import TransformedImage from '../TransformedImage';
 
 const transformationFormSchema = z.object({
   title: z.string(),
@@ -196,6 +197,15 @@ const TransformationForm = ({
                 type={type}
               />
             )}
+          />
+
+          <TransformedImage
+            image={image}
+            type={type}
+            title={form.getValues('title')}
+            isTransforming={isTransforming}
+            setIsTransforming={setIsTransforming}
+            transformationConfig={transformationConfig}
           />
         </div>
 
