@@ -20,7 +20,7 @@ import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } fro
 import { CustomField } from './CustomField';
 import { useEffect, useState, useTransition } from 'react';
 import { IImage } from '@/lib/database/models/image.model';
-import MediaUploader from '../MediaUploader';
+import MediaUploader from './MediaUploader';
 import TransformedImage from '../TransformedImage';
 import { getCldImageUrl } from 'next-cloudinary';
 import { addImage, updateImage } from '@/lib/actions/image.actions';
@@ -167,7 +167,7 @@ const TransformationForm = ({
           [fieldName === 'prompt' ? 'prompt' : 'to']: value,
         },
       }));
-    }, 1000);
+    }, 1000)();
 
     return onChange(value);
   };
@@ -204,7 +204,9 @@ const TransformationForm = ({
             formLabel='Aspect Ratio'
             className='w-full'
             render={({ field }) => (
-              <Select onValueChange={(value) => selectChangeHandler(value, field.onChange)}>
+              <Select
+                onValueChange={(value) => selectChangeHandler(value, field.onChange)}
+                value={field.value}>
                 <SelectTrigger className='select-field'>
                   <SelectValue placeholder='Select size' />
                 </SelectTrigger>
@@ -294,7 +296,7 @@ const TransformationForm = ({
           <Button
             type='submit'
             className='submit-button capitalize'
-            disabled={isSubmitting || !newTransformation || !form.watch('title')}>
+            disabled={isSubmitting || !form.watch('title')}>
             {isSubmitting ? 'Submitting...' : 'Save Image'}
           </Button>
         </div>

@@ -1,4 +1,4 @@
-declare type CreateUserParams = {
+declare interface CreateUserParams {
   clerkId: string;
   email: string;
   username: string;
@@ -7,14 +7,14 @@ declare type CreateUserParams = {
   photo: string;
 };
 
-declare type UpdateUserParams = {
+declare interface UpdateUserParams {
   firstName: string;
   lastName: string;
   username: string;
   photo: string;
 };
 
-declare type AddImageParams = {
+declare interface AddImageParams {
   image: {
     title: string;
     publicId: string;
@@ -32,7 +32,7 @@ declare type AddImageParams = {
   path: string;
 };
 
-declare type UpdateImageParams = {
+declare interface UpdateImageParams {
   image: {
     _id: string;
     title: string;
@@ -51,7 +51,7 @@ declare type UpdateImageParams = {
   path: string;
 };
 
-declare type Transformations = {
+declare interface Transformations {
   restore?: boolean;
   fillBackground?: boolean;
   remove?: {
@@ -67,15 +67,14 @@ declare type Transformations = {
   removeBackground?: boolean;
 };
 
-// ====== TRANSACTION PARAMS
-declare type CheckoutTransactionParams = {
+declare interface CheckoutTransactionParams {
   plan: string;
   credits: number;
   amount: number;
   buyerId: string;
 };
 
-declare type CreateTransactionParams = {
+declare interface CreateTransactionParams {
   stripeId: string;
   amount: number;
   credits: number;
@@ -86,29 +85,29 @@ declare type CreateTransactionParams = {
 
 declare type TransformationTypeKey = 'restore' | 'fill' | 'remove' | 'recolor' | 'removeBackground';
 
-declare type FormUrlQueryParams = {
+declare interface FormUrlQueryParams {
   searchParams: string;
   key: string;
   value: string | number | null;
 };
 
-declare type UrlQueryParams = {
+declare interface UrlQueryParams {
   params: string;
   key: string;
   value: string | null;
 };
 
-declare type RemoveUrlQueryParams = {
+declare interface RemoveUrlQueryParams {
   searchParams: string;
   keysToRemove: string[];
 };
 
-declare type SearchParamProps = {
+declare interface SearchParamProps {
   params: { id: string; type: TransformationTypeKey };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-declare type TransformationFormProps = {
+declare interface TransformationFormProps {
   action: 'Add' | 'Update';
   userId: string;
   type: TransformationTypeKey;
@@ -117,7 +116,7 @@ declare type TransformationFormProps = {
   config?: Transformations | null;
 };
 
-declare type TransformedImageProps = {
+declare interface TransformedImageProps {
   image: any;
   type: string;
   title: string;

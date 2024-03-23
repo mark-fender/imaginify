@@ -1,7 +1,7 @@
 'use client';
 
 import { Dispatch, SetStateAction } from 'react';
-import { useToast } from '../ui/use-toast';
+import { useToast } from '../../ui/use-toast';
 import {
   CldImage,
   CldUploadWidget,

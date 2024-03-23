@@ -1,5 +1,7 @@
-import { dataUrl, debounce, getImageSize } from '@/lib/utils';
-import { CldImage } from 'next-cloudinary';
+'use client';
+
+import { dataUrl, debounce, download, getImageSize } from '@/lib/utils';
+import { CldImage, getCldImageUrl } from 'next-cloudinary';
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
@@ -12,8 +14,17 @@ const TransformedImage = ({
   transformationConfig,
   hasDownload = false,
 }: TransformedImageProps) => {
-  const downloadHandler = (event: any) => {
-    throw new Error('Function not implemented.');
+  const downloadHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
+    download(
+      getCldImageUrl({
+        width: image?.width,
+        height: image?.height,
+        src: image?.publicId,
+        ...transformationConfig,
+      }),
+      title,
+    );
   };
 
   return (
@@ -45,13 +56,14 @@ const TransformedImage = ({
             placeholder={dataUrl as PlaceholderValue}
             className='transformed-image'
             onLoad={() => setIsTransforming?.(false)}
-            onError={() => debounce(() => setIsTransforming?.(false), 5000)}
+            onError={() => debounce(() => setIsTransforming?.(false), 5000)()}
             {...transformationConfig}
           />
 
           {isTransforming && (
             <div className='transforming-loader'>
               <Image src='/assets/icons/spinner.svg' alt='Transforming...' width={50} height={50} />
+              <p className='text-white/80'>Please wait...</p>
             </div>
           )}
         </div>

@@ -6,7 +6,7 @@ import { FormField, FormItem, FormControl, FormMessage, FormLabel } from '../../
 
 import { TransformationFormValues } from './TransformationForm';
 
-type CustomFieldProps = {
+interface CustomFieldProps {
   control: Control<TransformationFormValues> | undefined;
   render: (props: { field: any }) => React.ReactNode;
   name: keyof TransformationFormValues;
