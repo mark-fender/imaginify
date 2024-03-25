@@ -5,8 +5,8 @@ import { getAllImages } from '@/lib/actions/image.actions';
 import Collection from '@/components/shared/Collection';
 
 const Home = async ({ searchParams }: SearchParamProps) => {
-  const page = Number(searchParams?.page) ?? 1;
-  const searchQuery = (searchParams?.query as string) ?? '';
+  const page = Number(searchParams?.page) || 1;
+  const searchQuery = (searchParams?.query as string) || '';
 
   const images = await getAllImages({ page, searchQuery });
 
