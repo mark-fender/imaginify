@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 
 import Header from '@/components/shared/Header';
 import { getUserById } from '@/lib/actions/user.actions';
-import Collection from '@/components/shared/Collection';
+import ImageCollection from '@/components/shared/imageCollection/ImageCollection';
 import { getUserImages } from '@/lib/actions/image.actions';
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
@@ -51,7 +51,7 @@ const Profile = async ({ searchParams }: SearchParamProps) => {
       </section>
 
       <section className='mt-8 md:mt-14'>
-        <Collection images={images?.data} totalPages={images?.totalPages} page={page} />
+        <ImageCollection images={images?.data} totalPages={images?.totalPages} page={page} />
       </section>
     </>
   );

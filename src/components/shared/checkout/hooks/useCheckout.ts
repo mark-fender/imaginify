@@ -1,24 +1,16 @@
-'use client';
-
+import { useToast } from '@/components/ui/use-toast';
+import { checkoutCredits } from '@/lib/actions/transaction.actions';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect } from 'react';
 
-import { useToast } from '@/components/ui/use-toast';
-
-import { Button } from '../ui/button';
-import { checkoutCredits } from '@/lib/actions/transaction.actions';
-
-const Checkout = ({
-  plan,
-  amount,
-  credits,
-  buyerId,
-}: {
+interface UseCheckoutParams {
   plan: string;
   amount: number;
   credits: number;
   buyerId: string;
-}) => {
+}
+
+const useCheckout = ({ plan, amount, credits, buyerId }: UseCheckoutParams) => {
   const { toast } = useToast();
 
   useEffect(() => {
@@ -57,18 +49,7 @@ const Checkout = ({
     await checkoutCredits(transaction);
   };
 
-  return (
-    <form action={onCheckoutAction} method='POST'>
-      <section>
-        <Button
-          type='submit'
-          role='link'
-          className='w-full rounded-full bg-purple-gradient bg-cover'>
-          Buy Credits
-        </Button>
-      </section>
-    </form>
-  );
+  return { onCheckoutAction };
 };
 
-export default Checkout;
+export default useCheckout;

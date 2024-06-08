@@ -50,7 +50,6 @@ export const formUrlQuery = ({ searchParams, key, value }: FormUrlQueryParams) =
   })}`;
 };
 
-// REMOVE KEY FROM QUERY
 export function removeKeysFromQuery({ searchParams, keysToRemove }: RemoveUrlQueryParams) {
   const currentUrl = qs.parse(searchParams);
 

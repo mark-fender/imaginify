@@ -5,14 +5,14 @@ declare interface CreateUserParams {
   firstName: string;
   lastName: string;
   photo: string;
-};
+}
 
 declare interface UpdateUserParams {
   firstName: string;
   lastName: string;
   username: string;
   photo: string;
-};
+}
 
 declare interface AddImageParams {
   image: {
@@ -30,7 +30,7 @@ declare interface AddImageParams {
   };
   userId: string;
   path: string;
-};
+}
 
 declare interface UpdateImageParams {
   image: {
@@ -49,7 +49,7 @@ declare interface UpdateImageParams {
   };
   userId: string;
   path: string;
-};
+}
 
 declare interface Transformations {
   restore?: boolean;
@@ -65,14 +65,14 @@ declare interface Transformations {
     multiple?: boolean;
   };
   removeBackground?: boolean;
-};
+}
 
 declare interface CheckoutTransactionParams {
   plan: string;
   credits: number;
   amount: number;
   buyerId: string;
-};
+}
 
 declare interface CreateTransactionParams {
   stripeId: string;
@@ -81,7 +81,7 @@ declare interface CreateTransactionParams {
   plan: string;
   buyerId: string;
   createdAt: Date;
-};
+}
 
 declare type TransformationTypeKey = 'restore' | 'fill' | 'remove' | 'recolor' | 'removeBackground';
 
@@ -89,23 +89,23 @@ declare interface FormUrlQueryParams {
   searchParams: string;
   key: string;
   value: string | number | null;
-};
+}
 
 declare interface UrlQueryParams {
   params: string;
   key: string;
   value: string | null;
-};
+}
 
 declare interface RemoveUrlQueryParams {
   searchParams: string;
   keysToRemove: string[];
-};
+}
 
 declare interface SearchParamProps {
   params: { id: string; type: TransformationTypeKey };
   searchParams: { [key: string]: string | string[] | undefined };
-};
+}
 
 declare interface TransformationFormProps {
   action: 'Add' | 'Update';
@@ -114,7 +114,7 @@ declare interface TransformationFormProps {
   creditBalance: number;
   data?: IImage | null;
   config?: Transformations | null;
-};
+}
 
 declare interface TransformedImageProps {
   image: any;
@@ -124,4 +124,4 @@ declare interface TransformedImageProps {
   isTransforming: boolean;
   hasDownload?: boolean;
   setIsTransforming?: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}

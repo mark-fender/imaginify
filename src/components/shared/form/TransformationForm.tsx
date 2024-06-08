@@ -1,8 +1,5 @@
 'use client';
 
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import {
@@ -13,30 +10,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { AspectRatioKey, debounce, deepMergeObjects } from '@/lib/utils';
+import { AspectRatioKey } from '@/lib/utils';
 
 import { Input } from '@/components/ui/input';
-import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } from '@/constants';
+import { aspectRatioOptions, creditFee } from '@/constants';
 import { CustomField } from './CustomField';
-import { useEffect, useState, useTransition } from 'react';
-import { IImage } from '@/lib/database/models/image.model';
 import MediaUploader from './MediaUploader';
 import TransformedImage from '../TransformedImage';
-import { getCldImageUrl } from 'next-cloudinary';
-import { addImage, updateImage } from '@/lib/actions/image.actions';
-import { useRouter } from 'next/navigation';
 import InsufficientCreditModal from '../InsufficientCreditModal';
-import { updateCredits } from '@/lib/actions/user.actions';
-
-const transformationFormSchema = z.object({
-  title: z.string(),
-  aspectRatio: z.string().optional(),
-  color: z.string().optional(),
-  prompt: z.string().optional(),
-  publicId: z.string(),
-});
-
-export type TransformationFormValues = z.infer<typeof transformationFormSchema>;
+import useTransformationForm from './hooks/useTransformationForm';
 
 const TransformationForm = ({
   action,
@@ -46,144 +28,31 @@ const TransformationForm = ({
   creditBalance,
   config = null,
 }: TransformationFormProps) => {
-  const initialValues =
-    data && action === 'Update'
-      ? {
-          title: data?.title,
-          aspectRatio: data?.aspectRatio,
-          color: data?.color,
-          prompt: data?.prompt,
-          publicId: data?.publicId,
-        }
-      : defaultValues;
-
-  const transformationType = transformationTypes[type];
-  const [image, setImage] = useState<IImage>(data);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isTransforming, setIsTransforming] = useState(false);
-  const [transformationConfig, setTransformationConfig] = useState(config);
-  const [newTransformation, setNewTransformation] = useState<Transformations | null>(null);
-
-  const [isPending, startTransition] = useTransition();
-
-  const router = useRouter();
-
-  const form = useForm<TransformationFormValues>({
-    resolver: zodResolver(transformationFormSchema),
-    defaultValues: initialValues,
+  const {
+    image,
+    setImage,
+    transformationConfig,
+    newTransformation,
+    isSubmitting,
+    isTransforming,
+    setIsTransforming,
+    form,
+    submitHandler,
+    selectChangeHandler,
+    inputChangeHandler,
+    transformHandler,
+  } = useTransformationForm({
+    action,
+    data,
+    userId,
+    type,
+    creditBalance,
+    config,
   });
-
-  useEffect(() => {
-    if (image && (type === 'restore' || type === 'removeBackground')) {
-      setNewTransformation(transformationType.config);
-    }
-  }, [image, transformationType.config, type]);
-
-  const onSubmit = async (values: TransformationFormValues) => {
-    setIsSubmitting(true);
-
-    if (data || image) {
-      const transformationURL = getCldImageUrl({
-        width: image?.width,
-        height: image?.height,
-        src: image?.publicId,
-        ...transformationConfig,
-      });
-
-      const imageData = {
-        title: values.title,
-        publicId: image.publicId,
-        transformationType: type,
-        width: Number(image?.width),
-        height: Number(image?.height),
-        config: transformationConfig,
-        secureUrl: image?.secureUrl,
-        transformationURL,
-        aspectRatio: values?.aspectRatio,
-        prompt: values.prompt,
-        color: values.color,
-      };
-
-      if (action === 'Add') {
-        try {
-          const newImage = await addImage({ image: imageData, userId, path: '/' });
-
-          if (newImage) {
-            form.reset();
-            setImage(data);
-            router.push(`/transformations/${newImage._id}`);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      if (action === 'Update') {
-        try {
-          const imageUpdate = await updateImage({
-            image: { ...imageData, _id: data?._id },
-            userId,
-            path: `/transformations/${data._id}}`,
-          });
-
-          if (imageUpdate) {
-            router.push(`/transformations/${imageUpdate._id}`);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      setIsSubmitting(false);
-    }
-  };
-
-  const selectChangeHandler = (value: string, onChange: (value: string) => void) => {
-    const imageSize = aspectRatioOptions[value as AspectRatioKey];
-
-    setImage((prevImage: IImage) => ({
-      ...prevImage,
-      aspectRatio: imageSize.aspectRatio,
-      width: imageSize.width,
-      height: imageSize.height,
-    }));
-
-    setNewTransformation(transformationType.config);
-
-    return onChange(value);
-  };
-
-  const inputChangeHandler = (
-    fieldName: string,
-    value: string,
-    type: string,
-    onChange: (value: string) => void,
-  ) => {
-    debounce(() => {
-      setNewTransformation((prevTransformation: any) => ({
-        ...prevTransformation,
-        [type]: {
-          ...prevTransformation?.[type],
-          [fieldName === 'prompt' ? 'prompt' : 'to']: value,
-        },
-      }));
-    }, 1000)();
-
-    return onChange(value);
-  };
-
-  const transformHandler = async () => {
-    setIsTransforming(true);
-    setTransformationConfig(deepMergeObjects(newTransformation, transformationConfig));
-    setNewTransformation(null);
-    startTransition(async () => {
-      await updateCredits(userId, creditFee);
-    });
-  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(submitHandler)} className='space-y-8'>
         {creditBalance < Math.abs(creditFee) && <InsufficientCreditModal />}
         <FormField
           control={form.control}

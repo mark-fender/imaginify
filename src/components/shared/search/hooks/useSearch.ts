@@ -1,13 +1,8 @@
-'use client';
-
-import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-
-import { Input } from '@/components/ui/input';
 import { formUrlQuery, removeKeysFromQuery } from '@/lib/utils';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
-const Search = () => {
+const useSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState('');
@@ -35,17 +30,7 @@ const Search = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [router, searchParams, query]);
 
-  return (
-    <div className='search'>
-      <Image src='/assets/icons/search.svg' alt='search' width={24} height={24} />
-
-      <Input
-        className='search-field'
-        placeholder='Search'
-        onChange={(e) => setQuery(e.target.value)}
-      />
-    </div>
-  );
+  return { setQuery };
 };
 
-export default Search;
+export default useSearch;

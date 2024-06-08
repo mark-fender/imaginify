@@ -2,7 +2,7 @@ import { navLinks } from '@/constants';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getAllImages } from '@/lib/actions/image.actions';
-import Collection from '@/components/shared/Collection';
+import ImageCollection from '@/components/shared/imageCollection/ImageCollection';
 
 const Home = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
@@ -27,7 +27,12 @@ const Home = async ({ searchParams }: SearchParamProps) => {
       </section>
 
       <section className='sm:mt-12'>
-        <Collection hasSearch images={images?.data} page={page} totalPages={images?.totalPages} />
+        <ImageCollection
+          hasSearch
+          images={images?.data}
+          page={page}
+          totalPages={images?.totalPages}
+        />
       </section>
     </>
   );

@@ -1,31 +1,20 @@
 'use client';
 
-import { dataUrl, debounce, download, getImageSize } from '@/lib/utils';
-import { CldImage, getCldImageUrl } from 'next-cloudinary';
+import useDownloadImage from '@/lib/hooks/useDownloadImage';
+import { dataUrl, debounce, getImageSize } from '@/lib/utils';
+import { CldImage } from 'next-cloudinary';
 import { PlaceholderValue } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 
 const TransformedImage = ({
   image,
   type,
-  title,
   isTransforming,
   setIsTransforming,
   transformationConfig,
   hasDownload = false,
 }: TransformedImageProps) => {
-  const downloadHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
-    download(
-      getCldImageUrl({
-        width: image?.width,
-        height: image?.height,
-        src: image?.publicId,
-        ...transformationConfig,
-      }),
-      title,
-    );
-  };
+  const { downloadHandler } = useDownloadImage({ image, transformationConfig });
 
   return (
     <div className='flex flex-col gap-4'>
