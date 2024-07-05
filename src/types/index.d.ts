@@ -83,7 +83,12 @@ declare interface CreateTransactionParams {
   createdAt: Date;
 }
 
-declare type TransformationTypeKey = 'restore' | 'fill' | 'remove' | 'recolor' | 'removeBackground';
+declare type TransformationTypeKey =
+  | 'restore'
+  | 'fill'
+  | 'remove'
+  | 'recolor'
+  | 'removeBackground';
 
 declare interface FormUrlQueryParams {
   searchParams: string;

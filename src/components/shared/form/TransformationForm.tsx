@@ -13,7 +13,7 @@ import {
 import { AspectRatioKey } from '@/lib/utils';
 
 import { Input } from '@/components/ui/input';
-import { aspectRatioOptions, creditFee } from '@/constants';
+import { aspectRatioOptions, creditFee, TransformationType } from '@/constants';
 import { CustomField } from './CustomField';
 import MediaUploader from './MediaUploader';
 import TransformedImage from '../TransformedImage';
@@ -37,7 +37,7 @@ const TransformationForm = ({
     isTransforming,
     setIsTransforming,
     form,
-    submitHandler,
+    handleSubmit,
     selectChangeHandler,
     inputChangeHandler,
     transformHandler,
@@ -52,7 +52,7 @@ const TransformationForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(submitHandler)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
         {creditBalance < Math.abs(creditFee) && <InsufficientCreditModal />}
         <FormField
           control={form.control}
@@ -66,7 +66,7 @@ const TransformationForm = ({
             </FormItem>
           )}
         />
-        {type === 'fill' && (
+        {type === TransformationType.FILL && (
           <CustomField
             control={form.control}
             name='aspectRatio'
@@ -74,7 +74,9 @@ const TransformationForm = ({
             className='w-full'
             render={({ field }) => (
               <Select
-                onValueChange={(value) => selectChangeHandler(value, field.onChange)}
+                onValueChange={(value) =>
+                  selectChangeHandler(value as AspectRatioKey, field.onChange)
+                }
                 value={field.value}>
                 <SelectTrigger className='select-field'>
                   <SelectValue placeholder='Select size' />
@@ -90,12 +92,14 @@ const TransformationForm = ({
             )}
           />
         )}
-        {(type === 'remove' || type === 'recolor') && (
+        {(type === TransformationType.REMOVE || type === TransformationType.RECOLOR) && (
           <div className='prompt-field'>
             <CustomField
               control={form.control}
               name='prompt'
-              formLabel={type === 'remove' ? 'Object to remove' : 'Object to recolor'}
+              formLabel={
+                type === TransformationType.REMOVE ? 'Object to remove' : 'Object to recolor'
+              }
               className='w-full'
               render={({ field }) => (
                 <Input
@@ -107,7 +111,7 @@ const TransformationForm = ({
                 />
               )}
             />
-            {type === 'recolor' && (
+            {type === TransformationType.RECOLOR && (
               <CustomField
                 control={form.control}
                 name='color'
@@ -118,7 +122,12 @@ const TransformationForm = ({
                     value={field.value}
                     className='input-field'
                     onChange={(e) =>
-                      inputChangeHandler('color', e.target.value, 'recolor', field.onChange)
+                      inputChangeHandler(
+                        'color',
+                        e.target.value,
+                        TransformationType.RECOLOR,
+                        field.onChange,
+                      )
                     }
                   />
                 )}

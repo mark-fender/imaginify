@@ -25,7 +25,7 @@ const Page = async ({ params: { id } }: SearchParamProps) => {
         <TransformationForm
           action='Update'
           userId={user._id}
-          type={image.transformationType as TransformationTypeKey}
+          type={image.transformationType}
           creditBalance={user.creditBalance}
           config={image.config}
           data={image}

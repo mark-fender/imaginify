@@ -15,7 +15,11 @@ import {
 import { deleteImage } from '@/lib/actions/image.actions';
 import { Button } from '../ui/button';
 
-const DeleteConfirmation = ({ imageId }: { imageId: string }) => {
+interface DeleteConfirmationProps {
+  imageId: string;
+}
+
+const DeleteConfirmation = ({ imageId }: DeleteConfirmationProps) => {
   const [isPending, startTransition] = useTransition();
 
   return (

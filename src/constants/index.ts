@@ -1,3 +1,16 @@
+export enum TransformationType {
+  RESTORE = 'restore',
+  FILL = 'fill',
+  REMOVE = 'remove',
+  RECOLOR = 'recolor',
+  REMOVE_BACKGROUND = 'removeBackground',
+}
+
+export enum ActionType {
+  ADD = 'Add',
+  UPDATE = 'Update',
+}
+
 export const navLinks = [
   {
     label: 'Home',
@@ -121,28 +134,28 @@ export const plans = [
 
 export const transformationTypes = {
   restore: {
-    type: 'restore',
+    type: TransformationType.RESTORE,
     title: 'Restore Image',
     subTitle: 'Refine images by removing noise and imperfections',
     config: { restore: true },
     icon: 'image.svg',
   },
   removeBackground: {
-    type: 'removeBackground',
+    type: TransformationType.REMOVE_BACKGROUND,
     title: 'Background Remove',
     subTitle: 'Removes the background of the image using AI',
     config: { removeBackground: true },
     icon: 'camera.svg',
   },
   fill: {
-    type: 'fill',
+    type: TransformationType.FILL,
     title: 'Generative Fill',
     subTitle: "Enhance an image's dimensions using AI outpainting",
     config: { fillBackground: true },
     icon: 'stars.svg',
   },
   remove: {
-    type: 'remove',
+    type: TransformationType.REMOVE,
     title: 'Object Remove',
     subTitle: 'Identify and eliminate objects from images',
     config: {
@@ -151,7 +164,7 @@ export const transformationTypes = {
     icon: 'scan.svg',
   },
   recolor: {
-    type: 'recolor',
+    type: TransformationType.RECOLOR,
     title: 'Object Recolor',
     subTitle: 'Identify and recolor objects from the image',
     config: {

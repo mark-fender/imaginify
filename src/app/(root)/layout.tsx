@@ -1,8 +1,9 @@
 import MobileNav from '@/components/shared/MobileNav';
 import Sidebar from '@/components/shared/Sidebar';
 import { Toaster } from '@/components/ui/toaster';
+import { PropsWithChildren } from 'react';
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: PropsWithChildren) => {
   return (
     <main className='root'>
       <Sidebar />

@@ -3,17 +3,14 @@
 import { Button } from '../../ui/button';
 import useCheckout from './hooks/useCheckout';
 
-const Checkout = ({
-  plan,
-  amount,
-  credits,
-  buyerId,
-}: {
+interface CheckoutProps {
   plan: string;
   amount: number;
   credits: number;
   buyerId: string;
-}) => {
+}
+
+const Checkout = ({ plan, amount, credits, buyerId }: CheckoutProps) => {
   const { onCheckoutAction } = useCheckout({ plan, amount, credits, buyerId });
 
   return (

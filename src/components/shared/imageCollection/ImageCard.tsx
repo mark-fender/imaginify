@@ -4,9 +4,13 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { transformationTypes } from '@/constants';
 
-const ImageCard = ({ image }: { image: IImage }) => (
+interface ImageCardProps {
+  image: IImage;
+}
+
+const ImageCard = ({ image }: ImageCardProps) => (
   <li>
-    <Link href={`/transformations/${image._id}`} className='collection-card'>
+    <Link href={`/transformations/${image._id}`} className='image-card'>
       <CldImage
         src={image.secureUrl}
         alt={image.title}

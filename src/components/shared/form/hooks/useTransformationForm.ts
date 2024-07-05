@@ -1,4 +1,11 @@
-import { defaultValues, transformationTypes, aspectRatioOptions, creditFee } from '@/constants';
+import {
+  defaultValues,
+  transformationTypes,
+  aspectRatioOptions,
+  creditFee,
+  TransformationType,
+  ActionType,
+} from '@/constants';
 import { addImage, updateImage } from '@/lib/actions/image.actions';
 import { updateCredits } from '@/lib/actions/user.actions';
 import { IImage } from '@/lib/database/models/image.model';
@@ -21,11 +28,9 @@ const transformationFormSchema = z.object({
 
 export type TransformationFormValues = z.infer<typeof transformationFormSchema>;
 
-interface UseTransformationFormParams extends TransformationFormProps {}
-
-const useTransformationForm = ({ action, data, type, userId }: UseTransformationFormParams) => {
+const useTransformationForm = ({ action, data, type, userId }: TransformationFormProps) => {
   const initialValues =
-    data && action === 'Update'
+    data && action === ActionType.UPDATE
       ? {
           title: data?.title,
           aspectRatio: data?.aspectRatio,
@@ -52,7 +57,10 @@ const useTransformationForm = ({ action, data, type, userId }: UseTransformation
   });
 
   useEffect(() => {
-    if (image && (type === 'restore' || type === 'removeBackground')) {
+    if (
+      image &&
+      (type === TransformationType.RESTORE || type === TransformationType.REMOVE_BACKGROUND)
+    ) {
       setNewTransformation(transformationType.config);
     }
   }, [image, transformationType.config, type]);
@@ -83,7 +91,7 @@ const useTransformationForm = ({ action, data, type, userId }: UseTransformation
     }
   };
 
-  const submitHandler = async (values: TransformationFormValues) => {
+  const handleSubmit = async (values: TransformationFormValues) => {
     setIsSubmitting(true);
 
     if (data || image) {
@@ -108,11 +116,11 @@ const useTransformationForm = ({ action, data, type, userId }: UseTransformation
         color: values.color,
       };
 
-      if (action === 'Add') {
+      if (action === ActionType.ADD) {
         handleAddImage({ image: imageData, userId, path: '/' });
       }
 
-      if (action === 'Update') {
+      if (action === ActionType.UPDATE) {
         handleUpdateImage({
           image: { ...imageData, _id: data?._id },
           userId,
@@ -124,8 +132,8 @@ const useTransformationForm = ({ action, data, type, userId }: UseTransformation
     }
   };
 
-  const selectChangeHandler = (value: string, onChange: (value: string) => void) => {
-    const imageSize = aspectRatioOptions[value as AspectRatioKey];
+  const selectChangeHandler = (value: AspectRatioKey, onChange: (value: string) => void) => {
+    const imageSize = aspectRatioOptions[value];
 
     setImage((prevImage: IImage) => ({
       ...prevImage,
@@ -176,7 +184,7 @@ const useTransformationForm = ({ action, data, type, userId }: UseTransformation
     isTransforming,
     setIsTransforming,
     form,
-    submitHandler,
+    handleSubmit,
     selectChangeHandler,
     inputChangeHandler,
     transformHandler,

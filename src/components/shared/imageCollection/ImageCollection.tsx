@@ -12,17 +12,19 @@ import Search from '../search/Search';
 import usePagination from '@/lib/hooks/usePagination';
 import ImageCard from './ImageCard';
 
+interface ImageCollectionProps {
+  images: IImage[];
+  totalPages?: number;
+  page: number;
+  hasSearch?: boolean;
+}
+
 const ImageCollection = ({
   hasSearch = false,
   images,
   totalPages = 1,
   page,
-}: {
-  images: IImage[];
-  totalPages?: number;
-  page: number;
-  hasSearch?: boolean;
-}) => {
+}: ImageCollectionProps) => {
   const { pageChangeHandler } = usePagination();
 
   return (
